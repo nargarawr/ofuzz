@@ -11,3 +11,9 @@ An online Type-1 fuzzy logic specification, visualization and inferencing system
         library("shiny")
         runApp(".")
 4. This will launch the service in your web browser on a localhost
+
+## Building and running in [Docker](https://www.docker.com/)
+```
+docker build -t ofuzz .
+docker run -it --rm -p 3838:3838 --name ofuzz ofuzz
+```

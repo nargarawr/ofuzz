@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Necessary style sheets -->
+  <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/libs/jquery.slider.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-responsive.min.css"/>
+
+  <!-- Custom style sheets -->
+  <link rel="stylesheet" type="text/css" href="css/cxk-auxStyles.css"/>
+
+
+  <!-- Necessary functionality Javascript files-->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+  <script type="text/javascript" src="js/libs/shiny.js" ></script>
+  <script type="text/javascript" src="js/libs/jquery.slider.min.js"></script>
+  <script type="text/javascript" type="text/javascript" src="js/libs/bootstrap-tooltip.js"></script>
+  <script type="text/javascript" src="js/libs/bootstrap-popover.js"></script>
+  <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/libs/popover-extra-placements.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+  <!-- Custom Javascript files -->
+  <script src="js/cxk-objects.js"></script>
+  <script src="js/cxk-dynamic-ui.js"></script>
+  <script src="js/cxk-mf-ui.js"></script>
+  <script src="js/cxk-variable-ui.js"></script>
+  <script src="js/cxk-rule-ui.js"></script>    
+  <script src="js/cxk-io-ui.js"></script>    
+  <script src="js/cxk-popoverManager.js"></script>
+  <script src="js/cxk-graphs.js"></script>  
+  <script src="js/cxk-evaluate.js"></script>
+
+  <title> o-Fuzz! </title>
+</head>
+ 
+<body id="body" onload="showStart()">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12" style="padding: 10px 0px;">
+      <h1> o-Fuzz! </h1>
+      An online Type-1 fuzzy logic specification, visualization and inferencing system 
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span2">
+      <form class ="well">
+
+        <div id="dispSysParams">
+          <a href="#" id="paramHelpBtn" class="btn btn-success varHelpBtn" rel="popover" style="float:right" data-original-title>Help</a><br>
+          <h4> System Parameters </h4>
+          <label for="fisName">System Name: </label>
+          <input id="fisName" type="text" value="Sys001" onchange="storeValues()"/>
+        
+          <label class="control-label" for="fisType">System Type:</label>
+          <select id="fisType" class="input" onchange="storeValues()">
+            <option value="Mamdani"  selected="selected">Mamdani</option>
+          </select>
+
+          <label class="control-label" for="fisAnd">And Method:</label>
+          <select id="fisAnd" class="input" onchange="storeValues()">
+            <option value="Min" selected="selected">Min</option>
+            <option value="Product" disabled>Product</option>
+          </select>
+          
+          <label class="control-label" for="fisOr">Or Method:</label>
+          <select id="fisOr" class="input" onchange="storeValues()">
+            <option value="Max" selected="selected">Max</option>
+            <option value="Probor" disabled>Probor</option>
+          </select>
+
+          <label class="control-label" for="fisAgg">Aggregation Method:</label>
+          <select id="fisAgg"  class="input" onchange="storeValues()">
+            <option value="Max" selected="selected">Max</option>
+            <option value="Probor" disabled>Probor</option>
+            <option value="Sum">Sum</option>
+          </select>
+
+          <label class="control-label" for="fisImp">Implication Method:</label>
+          <select id="fisImp"  class="input" onchange="storeValues()">
+              <option value="Min" selected="selected">Min</option>
+              <option value="Prod">Prod</option>
+          </select>
+
+          <label class="control-label" for="fisDfz">Defuzzification Method:</label>
+          <select id="fisDfz"  class="input" onchange="storeValues()">
+              <option value="Centroid" selected="selected">Centroid</option>
+              <option value="Bisector">Bisector</option>
+              <option value="lom">Lom</option>
+              <option value="som">Som</option>
+              <option value="mom">Mom</option>
+          </select>
+        </div>
+        
+      </form>
+      <form class ="well">
+        <h4> System Listing </h4>
+        <div id="dispSysInfo">
+            
+        </div>
+      </form>
+      </div>
+    <div class="span10">
+      <div class="tabbable">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#tab-inputs" id="input-tab" data-toggle="tab" onClick="onTabChange(0)">Inputs</a>
+          </li>
+          <li>
+            <a href="#tab-outputs" id="output-tab" data-toggle="tab" onClick="onTabChange(1)">Outputs</a>
+          </li>
+          <li>
+            <a href="#tab-rules" id="rule-tab" data-toggle="tab" onClick="onTabChange(2)">Rules</a>
+          </li>
+          <li>
+            <a href="#tab-import" id="import-tab" data-toggle="tab" onClick="onTabChange(3)">Import</a>
+          </li>          
+          <li>
+            <a href="#tab-export" id="export-tab" data-toggle="tab" onClick="onTabChange(4)">Export</a>
+          </li>
+          <li>
+            <a href="#tab-eval" id="eval-tab" data-toggle="tab" onClick="onTabChange(5)">Evaluate</a>
+          </li>                
+          </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab-inputs">
+              <div class="span10">
+                  <button class="btn addNewVarBtn" id="addNewVarInput" onclick="addNewVar(true)">Add New Variable</button>
+                  <a href="#" id="inputVarHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+             </div>
+              <div style="padding-top:35px">
+                <div id="mainDivInput">
+                  <div class="break"></div>                 
+                </div>
+              </div>
+          </div>
+          <div class="tab-pane" id="tab-outputs">   
+              <div class="span10">
+                <button class="btn addNewVarBtn" id="addNewVarOutput" onclick="addNewVar(false)">Add New Variable</button>
+                <a href="#" id="outputVarHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+              </div>
+              <div style="padding-top:35px">
+                <div id="mainDivOutput">
+                  <div class="break"></div>                 
+                </div>
+              </div>
+          </div>
+          <div class="tab-pane" id="tab-rules">  
+
+              <div class="span10">
+                  <div id="errorRowRule"></div>
+                   <button class="btn addNewVarBtn" id="addNewRule" onclick="clearPopovers(); resetRuleCreator(); checkVarsForRules(); ">Add New Rule</button>
+                   <a href="#" id="ruleHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+              </div>  
+              <div style="padding-top:35px">
+                <div id="mainDivRule" class="span10">
+                  <div class="break"></div>   
+                </div>
+
+              </div>   
+            <div id="ruleTableWrapper">
+              <div id="ruleTableTitle" ></div>
+              <div id="ruleTableDivAND"></div> 
+              <div id="ruleTableDivOR"></div> 
+            </div>
+
+          </div>  
+          <div class="tab-pane" id="tab-import">   
+            <div class="span10">
+                  <div id="errorRowImport"></div>
+                  <div style="margin-left:2.564102564102564%;">
+                  <a href="#" id="importHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+                  <span class="btn btn-file">
+                    <input type="file" id="files" name="files[]"/>
+
+                  </span><br>
+                  <output id="nameList"></output>
+                  <output id="list"></output>
+                </div>
+              </div>  
+              <div style="padding-top:35px">
+                <div id="mainDivImport" style="margin-left:2.564102564102564%;">
+                  <div class="break"></div>                 
+                </div>
+              </div>                        
+            </div>   
+          <div class="tab-pane" id="tab-export">   
+              <div class="span10">
+                  <div id="errorRowExport"></div>
+                  <a href="#" id="exportHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+                    <div class="btn-group" style="width:70%">
+                      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="margin-left: 2.564102564102564%">
+                        Export As...
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" style="margin-left: 2.564102564102564%">
+                        <li> 
+                          <a href ="#" onclick="exportFile('mfis'); updateIOType('.fis'); allowDownload('fis')"> 
+                            MATLAB File (.fis)
+                          </a> 
+                        </li>
+                        <li> 
+                          <a href ="#" onclick="exportFile('ufis'); updateIOType('.fis'); allowDownload('fis')"> 
+                            FuzzyToolkitUoN File (.fis)
+                          </a> 
+                        </li>
+                        <li> 
+                          <a href ="#" onclick="exportFile('ojsn'); updateIOType('.json'); allowDownload('json')"> 
+                            o-Fuzz File (.json)
+                          </a> 
+                        </li>                        
+                      </ul>
+                    </div>
+               <div>
+               <div style="margin-left:2.564102564102564%;">
+                  <div class="break"></div>                 
+                  <input type="text" id="exportOutput" style="display:none"> 
+                  <input type="text" id="iotypestore" value=".fis" style="display:none"> 
+                  <div id="mainDivExport" style="width:80%; word-wrap:break-word"> </div>
+                </div>
+                <div style="float:right; margin-top:5px">
+                    <a id="downloadData" class="btn shiny-download-link btn-primary" target="_blank">Download</a>
+                </div>
+              </div> 
+              <div style="margin-bottom:100px"></div> 
+              </div>  
+                      
+            </div> 
+          <div class="tab-pane" id="tab-eval">  
+              <div class="span10">
+                  <div id="evalRowRule">
+                  </div>
+                  <div class="alert alert-info" id="evalPageInfo"> Before this page is usable, you need to add inputs, outputs, and rules to your system!</div>
+                  <a href="#" id="evalHelpBtn" class="btn btn-success varHelpBtn" rel="popover" data-original-title>Show Help</a>
+              </div>  
+              <div style="padding-top:35px">
+                <div id="mainDivEval" class="span10" style="overflow:hidden">
+                  <div class="break"></div>
+                  <div id="inputListWrapped" style="width: 60%;float:left;">
+                    <div id="inputValueList" style="margin-left:2.564102564102564%;">
+                      <h3> Inputs </h3>
+                      None!
+                      </div>
+                    <input type="text" id="passBackEval" style="display:none"> 
+                    <input type="text" id="passBackEval2" style="display:none"> 
+                    <input type="text" id="passBackEval3" style="display:none"> 
+
+                </div>
+                <div id="outputListWrapped" style="width: 40%;overflow:hidden;float:left;">
+                  <h3> Outputs </h3>
+                  
+                  <pre id="evalFisOutput" class="shiny-text-output"> </pre> 
+                </div>
+
+              </div> 
+              <div class="span10"> 
+                <hr>
+                  <div id="surfaceContainer" style="width:90%;">
+                    <div id="beforeYouPlot" style="width:100%; text-align:center"></div>
+                   <div id="plotGenSurf" class="shiny-plot-output" style="width: 100%; height: 400px"></div> 
+                  </div>
+                </div>
+          </div>
+            </div>                                   
+           </div>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+  <div class="modal-dialog modal-horizontal-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class= "btn btn-success" id="mfcHelpBtn" style="width:100px; height:30px; float:right" data-toggle="modal" href="">Show Help</button>        
+        <h4 class="modal-title">Membership Function Creator</h4>
+      </div>
+      <div class="modal-body">
+        <div style="float:left; width: 40%;">
+          <form class="modalForm">
+            <p class="titleText">Function name</p>
+            <input id="inputFunName" onBlur="drawChart()">
+            <br />
+            <p style="padding-top:5px" class="titleText">Function type</p>
+            <select id="mfTypeSelect" style="width:210px" onChange="updateModal();">
+              <option value="gaussMF" id="ga1f">  Gaussian </option>
+              <option value="gaussbMF" id="ga2f"> 2-Part Gaussian </option>
+              <option value="triMF" id="timf">    Triangular </option>
+              <option value="trapMF" id="tpmf">   Trapezoidal </option>                    
+            </select>
+            <hr class="divide">
+            <p class="titleText">Parameters</p>
+            <div id="variableOptions">
+            </div>
+          </form>
+        </div>
+
+        <div id="chart_div" class="shiny-plot-output" style="width: 60%; float:left">
+        </div> 
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+        <button type="button" class="btn btn-primary" onClick='createMembershipFunction(getCurrentDiv(), getIsInput())' id="btn1">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myRuleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class= "btn btn-success" id="rulecHelpBtn" style="width:100px; height:30px; float:right" data-toggle="modal" href="">Show Help</button>        
+        <h4 class="modal-title">Rule Creator</h4>
+      </div>
+      <div class="modal-body">
+        <div id="ruleModalDiv">
+        </div>
+        <br>
+        <hr class="divide">
+        <div id="ruleCreatorErrorsDiv"></div>
+        <br>
+        <div style="margin-left:25px; width:25%; float:left">
+          <b>Connective</b>
+          <form>
+          <div class="btn-group">
+            <div class="form-inline">
+                <label class="radio inline"> <input type="radio" name="connective" id="cand" checked value="AND"/> And </label>
+                <br>
+                <label class="radio inline"> <input type="radio" name="connective" id="cor" value="OR"/> Or </label>
+            </div>
+          </div>
+          <script type="text/javascript">
+          $("#cand, #cor").change(function () {
+             for ( var key in connectiveColumns ) {
+                var cc = connectiveColumns[key];
+                cc.removeChild(cc.firstChild);
+                cc.appendChild(document.createTextNode(getConnective()));
+              }
+          });
+          </script>
+        </div>     
+        <div>
+          <b> Weight: </b> <input type="text" style="width:50px; height:25px" id="weight_val" onblur="validRuleWeight()"> <br>
+          <br>
+          0 <input type="range" name="points" id="weight_val_selector" step="0.1" min="0" max="1" onchange="updateWeight()"> 1
+        </div>   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+        <button type="button" class="btn btn-primary" onClick='addNewRule(edittingRule)' id="btn2">Save Rule</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="startModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> Getting Started </h4>
+      </div>
+      <div class="modal-body">
+          Welcome to o-Fuzz, the online fuzzy set construction system. The purpose of this system is to allow the average user to construct and visualise fuzzy sets and systems, in the easiest manner possible. The system is aimed at experts and novice, both in regards to knowledge in fuzzy logic, and in use of computer systems in general, so in theory, anybody should be able to use this system with ease.<br>
+          <br>
+          To begin, you should think about the problem you are attempting to solve, and how you would construct this as a fuzzy system. You can then add input variables on the "input" tab, and output variables on the "output" tab. Each page of the system has a help button in the top right, that will explain to you what do to on every page, if you get stuck. After specifying the input and output variables, use the "rule" tab to specify the rules for your system, using the simple graphical interface, after which evaluation can take place on the "evaluate" tab.<br>
+          <br>
+          I hope you enjoy using the system, and if you have any questions or complaints, please email me at psyck@nottingham.ac.uk
+
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+      </div>      
+    </div>
+  </div>     
+</div>
+
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+</script>
+</body>  
+</html>

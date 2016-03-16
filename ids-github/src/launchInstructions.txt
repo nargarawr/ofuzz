@@ -1,0 +1,9 @@
+To launch the system:
+
+1) Open an R window
+2) Set the working directory to be the directory that contains the ~/src/ folder
+	setwd("/home/cxk/Desktop/src/") #for example
+3) Type the following commands:
+	library("shiny")
+	runApp(".")
+4) This will launch the service in your web browser on a localhost

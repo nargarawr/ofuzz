@@ -99,8 +99,9 @@ shinyServer(function(input, output) {
               
               nameHolder = gsub("Name='|'", "", txt[[1]][txtc])
               txtc= txtc+1
-              minHolder = gsub("Range=\\[|\\d+\\]","",txt[[1]][txtc])
-              maxHolder = gsub("Range=\\[\\d+ |\\]","",txt[[1]][txtc])
+              minmax <- unlist(strsplit(gsub("Range=\\[(.*?)\\]", "\\1", txt[[1]][txtc]), " "))
+              minHolder <- minmax[1]
+              maxHolder <- minmax[2]
               txtc=txtc+1
               # Adds the variable name and range to the FIS structure currently stored in memory.
               FIS= addVar(FIS, "input", nameHolder, c(minHolder:maxHolder))
@@ -155,9 +156,10 @@ shinyServer(function(input, output) {
               
               nameHolder = gsub("Name='|'", "", txt[[1]][txtc])
               txtc= txtc+1
-              minHolder = gsub("Range=\\[|\\d+\\]","",txt[[1]][txtc])
-              maxHolder = gsub("Range=\\[\\d+ |\\]","",txt[[1]][txtc])
-              
+              minmax <- unlist(strsplit(gsub("Range=\\[(.*?)\\]", "\\1", txt[[1]][txtc]), " "))
+              minHolder <- minmax[1]
+              maxHolder <- minmax[2]
+
               # Adds the variable name and range to the FIS structure currently stored in memory.
               FIS= addVar(FIS, "output", nameHolder, c(minHolder:maxHolder))
               

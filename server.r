@@ -1,5 +1,6 @@
 library(shiny)
-library(FuzzyToolkitUoN)
+
+source(file = 'FuzzyToolkitUoN.R', chdir='T')
 
 shinyServer(function(input, output) {
 
